@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 
-class ImplicitAnimationScreen extends StatefulWidget {
-  const ImplicitAnimationScreen({super.key});
+class ImplicitAnimationsScreen extends StatefulWidget {
+  const ImplicitAnimationsScreen({super.key});
 
   @override
-  State<ImplicitAnimationScreen> createState() =>
-      _ImplicitAnimationScreenState();
+  State<ImplicitAnimationsScreen> createState() =>
+      _ImplicitAnimationsScreenState();
 }
 
-class _ImplicitAnimationScreenState extends State<ImplicitAnimationScreen> {
-  bool visible = false;
+class _ImplicitAnimationsScreenState extends State<ImplicitAnimationsScreen> {
+  bool _visible = true;
 
-  void trigger() {
+  void _trigger() {
     setState(() {
-      visible = !visible;
+      _visible = !_visible;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final sizes = MediaQuery.of(context).size;
-
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Implict Animations'),
@@ -29,28 +28,25 @@ class _ImplicitAnimationScreenState extends State<ImplicitAnimationScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TweenAnimationBuilder(
-              tween: ColorTween(
-                begin: Colors.blue,
-                end: Colors.red,
-              ),
-              curve: Curves.bounceInOut,
+            AnimatedContainer(
+              curve: Curves.elasticOut,
               duration: const Duration(seconds: 5),
-              builder: (context, value, child) {
-                return Image.network(
-                  'https://storage.googleapis.com/cms-storage-bucket/780e0e64d323aad2cdd5.png',
-                  color: value,
-                  colorBlendMode: BlendMode.colorBurn,
-                );
-              },
+              width: size.width * 0.8,
+              height: size.width * 0.8,
+              transform: Matrix4.rotationZ(_visible ? 1 : 0),
+              transformAlignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: _visible ? Colors.red : Colors.amber,
+                borderRadius: BorderRadius.circular(_visible ? 100 : 0),
+              ),
             ),
             const SizedBox(
               height: 50,
             ),
             ElevatedButton(
-              onPressed: trigger,
-              child: const Text('go'),
-            ),
+              onPressed: _trigger,
+              child: const Text('Go!'),
+            )
           ],
         ),
       ),
