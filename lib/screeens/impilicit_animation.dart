@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ImplicitAnimationScreen extends StatefulWidget {
   const ImplicitAnimationScreen({super.key});
@@ -10,7 +9,7 @@ class ImplicitAnimationScreen extends StatefulWidget {
 }
 
 class _ImplicitAnimationScreenState extends State<ImplicitAnimationScreen> {
-  bool visible = true;
+  bool visible = false;
 
   void trigger() {
     setState(() {
@@ -30,21 +29,23 @@ class _ImplicitAnimationScreenState extends State<ImplicitAnimationScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AnimatedAlign(
-              duration: const Duration(seconds: 2),
-              alignment: visible ? Alignment.centerLeft : Alignment.topRight,
-              child: AnimatedOpacity(
-                opacity: visible ? 1 : 0,
-                duration: const Duration(seconds: 2),
-                child: Container(
-                  width: sizes.width * 0.8,
-                  height: sizes.width * 0.8,
-                  color: Colors.amber,
-                ),
+            TweenAnimationBuilder(
+              tween: ColorTween(
+                begin: Colors.blue,
+                end: Colors.red,
               ),
+              curve: Curves.bounceInOut,
+              duration: const Duration(seconds: 5),
+              builder: (context, value, child) {
+                return Image.network(
+                  'https://storage.googleapis.com/cms-storage-bucket/780e0e64d323aad2cdd5.png',
+                  color: value,
+                  colorBlendMode: BlendMode.colorBurn,
+                );
+              },
             ),
             const SizedBox(
-              height: 10,
+              height: 50,
             ),
             ElevatedButton(
               onPressed: trigger,
